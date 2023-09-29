@@ -10,9 +10,9 @@ router.get("/login", (req, res) => {
   });
 });
 
-router.post("/login", (req, res) => {
+router.post("/login", async (req, res) => {
+  const existUser = await User.findOne({ email: req.body.email });
   res.redirect("/");
-  console.log(req.body);
 });
 
 router.get("/register", (req, res) => {
