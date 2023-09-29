@@ -3,6 +3,7 @@ import { create } from "express-handlebars";
 import mongoose from "mongoose";
 import authRoutes from "./routes/auth.js";
 import productsRoutes from "./routes/products.js";
+import flash from "connect-flash";
 import * as dotenv from "dotenv";
 
 dotenv.config();
@@ -18,9 +19,10 @@ app.engine("hbs", hbs.engine);
 app.set("view engine", "hbs");
 app.set("views", "./views");
 
+app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(express.static("public"));
+app.use(flash);
 
 app.use(authRoutes);
 app.use(productsRoutes);

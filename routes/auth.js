@@ -7,11 +7,29 @@ router.get("/login", (req, res) => {
   res.render("login", {
     title: "Login | Boom shop",
     isLogin: true,
+    loginError: "Error",
   });
 });
 
 router.post("/login", async (req, res) => {
   const existUser = await User.findOne({ email: req.body.email });
+  if (!existUser) {
+    console.log("User not found");
+    return false;
+  }
+
+  const isPassEqual = await bcrypt.compare(
+    req.body.password,
+    existUser.password
+  );
+
+  if (!isPassEqual) {
+    console.log("Password wrong");
+    return false;
+  }
+
+  console.log(existUser);
+
   res.redirect("/");
 });
 
@@ -19,6 +37,7 @@ router.get("/register", (req, res) => {
   res.render("register", {
     title: "Register | Boom shop",
     isRegister: true,
+    registerError: "Error",
   });
 });
 
